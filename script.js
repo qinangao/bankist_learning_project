@@ -61,6 +61,41 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+//Computing Usernames
+const creatUsernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLocaleLowerCase()
+      .split(' ')
+      .map(user => user[0])
+      .join('');
+  });
+};
+creatUsernames(accounts);
+console.log(accounts);
+
+const displayMovement = function (movements) {
+  containerMovements.innerHTML = '';
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `
+        <div class="movements__row">
+          <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+        
+          <div class="movements__value">${mov} €</div>
+        </div>`;
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
+displayMovement(account1.movements);
+
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((a, c) => a + c, 0);
+  labelBalance.textContent = `${balance} €`;
+};
+calcDisplayBalance(account1.movements);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -103,9 +138,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // console.log(arr.at(-1));
 
 // console.log('Jonas'.at(-1));
-
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // //for loop
 // // for (const m of movements) {
 // for (const [i, m] of movements.entries()) {
@@ -144,3 +177,97 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // currenciesUnique.forEach(function (value, _, map) {
 //   console.log(`${value}: ${value}`);
 // });
+
+//Challenge:
+
+// function checkDogs(dogsJulia, dogsKate) {
+//   const juliaNew = dogsJulia.slice(1, -2);
+//   const allDogs = [...juliaNew, ...dogsKate];
+//   console.log(allDogs);
+//   allDogs.forEach(function (age, i) {
+//     age >= 3
+//       ? console.log(`Dog number ${i + 1} is an adult, and is ${age} years old`)
+//       : console.log(`Dog number ${i + 1} is  still a puppy `);
+//   });
+// }
+// checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
+// checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4]);
+
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const euroToUsd = 1.1;
+
+// const movementsUSD = movements.map(function (mov) {
+//   return mov * euroToUsd;
+// });
+
+//Arrow function
+// const movementsUSD = movements.map(mov => mov * euroToUsd);
+// console.log(movements);
+// console.log(movementsUSD);
+//using For loop
+// const movementsUSDFor = [];
+// for (const mov of movements) {
+//   movementsUSDFor.push(mov * euroToUsd);
+// }
+// console.log(movementsUSDFor);
+
+// for (const [i, m] of movements.entries()) {
+//
+
+// const movementDes = movements.map(
+//   (m, i) =>
+//     `Movement ${i + 1}: You ${m > 0 ? 'deposited' : 'withdrawed'} ${Math.abs(
+//       m
+//     )}`
+// );
+
+// console.log(movementDes);
+
+//Filter
+// const deposit = movements.filter(function (mov) {
+//   return mov > 0;
+// });
+
+// console.log(movements);
+// console.log(deposit);
+// //For loop
+// const depositFor = [];
+// for (const mov of movements) {
+//   if (mov > 0) {
+//     depositFor.push(mov);
+//   }
+// }
+// console.log(depositFor);
+
+// const withdrawal = movements.filter(mov => mov < 0);
+// console.log(withdrawal);
+
+//Reduce
+//accumulator is like sum
+// const balance = movements.reduce(function (acc, cur, i, arr) {
+//   console.log(`Iteration ${i}: ${acc}`);
+//   return acc + cur;
+// }, 0);
+// console.log(balance);
+
+// const balance = movements.reduce((acc, cur) => acc + cur, 0);
+
+// //For loop method:
+// let balanceFor = 0;
+// for (const mov of movements) {
+//   balanceFor += mov;
+// }
+// console.log(balanceFor);
+
+//Get the max value of the array
+
+// const maxValue = movements.reduce((a, c) => {
+//   if (a > c) {
+//     return a;
+//   } else {
+//     return c;
+//   }
+// }, movements[0]);
+
+// const maxValue = movements.reduce((a, c) => (a > c ? a : c), movements[0]);
+// console.log(maxValue);
