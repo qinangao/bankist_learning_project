@@ -72,8 +72,8 @@ const creatUsernames = function (accs) {
   });
 };
 creatUsernames(accounts);
-console.log(accounts);
-
+// console.log(accounts);
+//Display Movement
 const displayMovement = function (movements) {
   containerMovements.innerHTML = '';
   movements.forEach(function (mov, i) {
@@ -91,11 +91,27 @@ const displayMovement = function (movements) {
 };
 displayMovement(account1.movements);
 
+//Display Balance
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((a, c) => a + c, 0);
   labelBalance.textContent = `${balance} €`;
 };
 calcDisplayBalance(account1.movements);
+
+//Display Summary
+const calcDisplaySummary = function (movements) {
+  const incomes = movements.filter(mov => mov > 0).reduce((a, c) => a + c, 0);
+  labelSumIn.textContent = `${incomes}€`;
+  const outcomes = movements.filter(mov => mov < 0).reduce((a, c) => a + c, 0);
+  labelSumOut.textContent = `${Math.abs(outcomes)}€`;
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(n => n * account1.interestRate * 0.01)
+    .reduce((a, c) => a + c, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -138,7 +154,7 @@ calcDisplayBalance(account1.movements);
 // console.log(arr.at(-1));
 
 // console.log('Jonas'.at(-1));
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // //for loop
 // // for (const m of movements) {
 // for (const [i, m] of movements.entries()) {
@@ -178,7 +194,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 //   console.log(`${value}: ${value}`);
 // });
 
-//Challenge:
+//Challenge 1:
 
 // function checkDogs(dogsJulia, dogsKate) {
 //   const juliaNew = dogsJulia.slice(1, -2);
@@ -193,13 +209,13 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 // checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4]);
 
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-// const euroToUsd = 1.1;
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const euroToUsd = 1.1;
 
 // const movementsUSD = movements.map(function (mov) {
 //   return mov * euroToUsd;
 // });
-
+console.log(movements);
 //Arrow function
 // const movementsUSD = movements.map(mov => mov * euroToUsd);
 // console.log(movements);
@@ -271,3 +287,45 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 // const maxValue = movements.reduce((a, c) => (a > c ? a : c), movements[0]);
 // console.log(maxValue);
+
+//Challenge 2:
+// const calcAverageHumanAge = function (ages) {
+//   const humanAge = ages.map(age => (age > 2 ? 16 + age * 4 : 2 * age));
+//   console.log(humanAge);
+//   const adultDogs = humanAge.filter(age => age >= 18);
+//   console.log(adultDogs);
+//   const aveAge = adultDogs.reduce((a, c) => a + c, 0) / adultDogs.length;
+//   return aveAge;
+// };
+
+// console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
+// console.log(calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]));
+
+//PIPELINE
+// const totalDepositInUSD = movements
+//   .filter(m => m > 0)
+//   .map(m => m * euroToUsd)
+//   .reduce((a, c) => a + c, 0);
+// console.log(totalDepositInUSD);
+
+//Challenge 3:
+// const calcAverageHumanAge = function (ages) {
+//   const aveAge = ages
+//     .map(age => (age > 2 ? 16 + age * 4 : 2 * age))
+//     .filter(age => age >= 18)
+//     .reduce((a, c, i, arr) => a + c / arr.length, 0);
+//   return aveAge;
+// };
+
+// console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
+// console.log(calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]));
+
+//Find Method
+
+const firstWithdrawl = movements.find(mov => mov < 0);
+
+console.log(firstWithdrawl);
+console.log(accounts);
+
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
