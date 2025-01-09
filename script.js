@@ -72,7 +72,37 @@ const creatUsernames = function (accs) {
   });
 };
 creatUsernames(accounts);
+
 // console.log(accounts);
+
+//Login
+
+let currentAccount;
+btnLogin.addEventListener('click', function (e) {
+  //prevent form from submmiting
+  e.preventDefault();
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    //display UI and welcome message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }!`;
+    containerApp.style.opacity = 1;
+    //Clear input field
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+    //Display movement
+    displayMovement(currentAccount.movements);
+    //Display balance
+    calcDisplayBalance(currentAccount.movements);
+    //Display summary
+    calcDisplaySummary(currentAccount);
+  }
+});
+
 //Display Movement
 const displayMovement = function (movements) {
   containerMovements.innerHTML = '';
@@ -89,28 +119,29 @@ const displayMovement = function (movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
-displayMovement(account1.movements);
 
 //Display Balance
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((a, c) => a + c, 0);
   labelBalance.textContent = `${balance} €`;
 };
-calcDisplayBalance(account1.movements);
 
 //Display Summary
-const calcDisplaySummary = function (movements) {
-  const incomes = movements.filter(mov => mov > 0).reduce((a, c) => a + c, 0);
-  labelSumIn.textContent = `${incomes}€`;
-  const outcomes = movements.filter(mov => mov < 0).reduce((a, c) => a + c, 0);
-  labelSumOut.textContent = `${Math.abs(outcomes)}€`;
-  const interest = movements
+const calcDisplaySummary = function (acc) {
+  const incomes = acc.movements
     .filter(mov => mov > 0)
-    .map(n => n * account1.interestRate * 0.01)
+    .reduce((a, c) => a + c, 0);
+  labelSumIn.textContent = `${incomes}€`;
+  const outcomes = acc.movements
+    .filter(mov => mov < 0)
+    .reduce((a, c) => a + c, 0);
+  labelSumOut.textContent = `${Math.abs(outcomes)}€`;
+  const interest = acc.movements
+    .filter(mov => mov > 0)
+    .map(n => n * acc.interestRate * 0.01)
     .reduce((a, c) => a + c, 0);
   labelSumInterest.textContent = `${interest}€`;
 };
-calcDisplaySummary(account1.movements);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -215,7 +246,7 @@ const euroToUsd = 1.1;
 // const movementsUSD = movements.map(function (mov) {
 //   return mov * euroToUsd;
 // });
-console.log(movements);
+// console.log(movements);
 //Arrow function
 // const movementsUSD = movements.map(mov => mov * euroToUsd);
 // console.log(movements);
@@ -322,10 +353,10 @@ console.log(movements);
 
 //Find Method
 
-const firstWithdrawl = movements.find(mov => mov < 0);
+// const firstWithdrawl = movements.find(mov => mov < 0);
 
-console.log(firstWithdrawl);
-console.log(accounts);
+// console.log(firstWithdrawl);
+// console.log(accounts);
 
-const account = accounts.find(acc => acc.owner === 'Jessica Davis');
-console.log(account);
+// const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+// console.log(account);
