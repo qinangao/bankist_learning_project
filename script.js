@@ -171,6 +171,23 @@ btnTransfer.addEventListener('click', function (e) {
     updateUI(currentAccount);
   }
 });
+//Request loan
+//Rule: only grants a loan if there is at least one deposit
+//with at least 10% of the request loan amount
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const loanAmount = Number(inputLoanAmount.value);
+  if (
+    loanAmount > 0 &&
+    currentAccount.movements.some(mov => mov >= loanAmount / 10)
+  ) {
+    //Add amount
+    currentAccount.movements.push(loanAmount);
+    //Update UI
+    updateUI(currentAccount);
+    inputLoanAmount.value = '';
+  }
+});
 //Delete account
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
@@ -408,3 +425,155 @@ const euroToUsd = 1.1;
 
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account);
+
+// //FindLast
+// console.log(movements);
+// const lastWithdrawl = movements.findLast(mov => mov < 0);
+// console.log(lastWithdrawl);
+
+// // ('Your lastest largest movement was X movement ago');
+// const lastestLargeMivIndex = movements.findLastIndex(
+//   mov => Math.abs(mov) > 1000
+// );
+// console.log(lastestLargeMivIndex);
+// console.log(
+//   `Your lastest largest movement was ${
+//     movements.length - lastestLargeMivIndex
+//   } movement ago`
+// );
+
+//Some and Every
+//Some-----------------------------------------
+//Equality
+// console.log(movements.includes(-130));
+// //Condition
+// console.log(movements.some(mov => mov === -130));
+// const anyDeposit = movements.some(mov => mov > 1500);
+// console.log(anyDeposit);
+
+// //Every
+// console.log(movements.every(mov => mov > 0));
+// console.log(account4.movements.every(mov => mov > 0));
+
+// //Seperate callback
+
+// const deposit = mov => mov > 0;
+
+// console.log(movements.some(deposit));
+// console.log(movements.every(deposit));
+// console.log(movements.filter(deposit));
+
+// //Flat:
+// const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+// console.log(arr.flat());
+// const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+// console.log(arrDeep.flat(2));
+
+// const overallBalance = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((a, c) => a + c, 0);
+
+// console.log(overallBalance);
+
+// //FlatMap:only go one level deep
+// const overallBalance2 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((a, c) => a + c, 0);
+
+// console.log(overallBalance);
+
+// Coding Challenge #4
+
+// This time, Julia and Kate are studying the activity levels of different dog breeds.
+
+// YOUR TASKS:
+// 1. Store the the average weight of a "Husky" in a variable "huskyWeight"
+// 2. Find the name of the only breed that likes both "running" and "fetch" ("dogBothActivities" variable)
+// 3. Create an array "allActivities" of all the activities of all the dog breeds
+// 4. Create an array "uniqueActivities" that contains only the unique activities (no activity repetitions). HINT: Use a technique with a special data structure that we studied a few sections ago.
+// 5. Many dog breeds like to swim. What other activities do these dogs like? Store all the OTHER activities these breeds like to do, in a unique array called "swimmingAdjacent".
+// 6. Do all the breeds have an average weight of 10kg or more? Log to the console whether "true" or "false".
+// 7. Are there any breeds that are "active"? "Active" means that the dog has 3 or more activities. Log to the console whether "true" or "false".
+
+// BONUS: What's the average weight of the heaviest breed that likes to fetch? HINT: Use the "Math.max" method along with the ... operator.
+
+// TEST DATA:
+
+const breeds = [
+  {
+    breed: 'German Shepherd',
+    averageWeight: 32,
+    activities: ['fetch', 'swimming'],
+  },
+  {
+    breed: 'Dalmatian',
+    averageWeight: 24,
+    activities: ['running', 'fetch', 'agility'],
+  },
+  {
+    breed: 'Labrador',
+    averageWeight: 28,
+    activities: ['swimming', 'fetch'],
+  },
+  {
+    breed: 'Beagle',
+    averageWeight: 12,
+    activities: ['digging', 'fetch'],
+  },
+  {
+    breed: 'Husky',
+    averageWeight: 26,
+    activities: ['running', 'agility', 'swimming'],
+  },
+  {
+    breed: 'Bulldog',
+    averageWeight: 36,
+    activities: ['sleeping'],
+  },
+  {
+    breed: 'Poodle',
+    averageWeight: 18,
+    activities: ['agility', 'fetch'],
+  },
+];
+
+// Chanllenge 5
+// const dogs = [
+//   { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+//   { weight: 8, curFood: 200, owners: ['Matilda'] },
+//   { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+//   { weight: 32, curFood: 340, owners: ['Michael'] },
+// ];
+
+// //1
+// dogs.forEach(function (dog) {
+//   dog.recommendedFood = Math.floor(dog.weight ** 0.75 * 28);
+// });
+// console.log(dogs);
+// //2
+// const sarahDog = dogs.find(dog => dog.owners.includes('Sarah'));
+// sarahDog.curFood > sarahDog.recommendedFood
+//   ? console.log(`Sarah's dog is eating too much`)
+//   : console.log(`Sarah's dog is eating too little`);
+// //3,4
+// const ownersEatTooMuch = dogs
+//   .filter(dog => dog.curFood > dog.recommendedFood)
+//   .flatMap(dog => dog.owners);
+// console.log(`${ownersEatTooMuch.join(' and ')}'s dogs eat too much! `);
+// const ownersEatTooLittle = dogs
+//   .filter(dog => dog.curFood < dog.recommendedFood)
+//   .flatMap(dog => dog.owners);
+// console.log(`${ownersEatTooLittle.join(' and ')}'s dogs eat too little!`);
+// //5
+// console.log(dogs.some(dog => dog.curFood === dog.recommendedFood));
+// //6
+// const okayDog = dogs.some(
+//   dog => dog.curFood >= dog.curFood * 0.9 && dog.curFood <= dog.curFood * 1.1
+// );
+// console.log(okayDog);
+// //7.
+// const okayDog2 = dogs.filter(
+//   dog => dog.curFood >= dog.curFood * 0.9 && dog.curFood <= dog.curFood * 1.1
+// );
+// console.log(okayDog2);
