@@ -109,9 +109,12 @@ btnLogin.addEventListener('click', function (e) {
 });
 
 //Display Movement
-const displayMovement = function (movements) {
+const displayMovement = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
         <div class="movements__row">
@@ -207,6 +210,13 @@ btnClose.addEventListener('click', function (e) {
     //Hide UI
     containerApp.style.opacity = 0;
   }
+});
+
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovement(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -500,43 +510,78 @@ const euroToUsd = 1.1;
 
 // TEST DATA:
 
-const breeds = [
-  {
-    breed: 'German Shepherd',
-    averageWeight: 32,
-    activities: ['fetch', 'swimming'],
-  },
-  {
-    breed: 'Dalmatian',
-    averageWeight: 24,
-    activities: ['running', 'fetch', 'agility'],
-  },
-  {
-    breed: 'Labrador',
-    averageWeight: 28,
-    activities: ['swimming', 'fetch'],
-  },
-  {
-    breed: 'Beagle',
-    averageWeight: 12,
-    activities: ['digging', 'fetch'],
-  },
-  {
-    breed: 'Husky',
-    averageWeight: 26,
-    activities: ['running', 'agility', 'swimming'],
-  },
-  {
-    breed: 'Bulldog',
-    averageWeight: 36,
-    activities: ['sleeping'],
-  },
-  {
-    breed: 'Poodle',
-    averageWeight: 18,
-    activities: ['agility', 'fetch'],
-  },
-];
+// const breeds = [
+//   {
+//     breed: 'German Shepherd',
+//     averageWeight: 32,
+//     activities: ['fetch', 'swimming'],
+//   },
+//   {
+//     breed: 'Dalmatian',
+//     averageWeight: 24,
+//     activities: ['running', 'fetch', 'agility'],
+//   },
+//   {
+//     breed: 'Labrador',
+//     averageWeight: 28,
+//     activities: ['swimming', 'fetch'],
+//   },
+//   {
+//     breed: 'Beagle',
+//     averageWeight: 12,
+//     activities: ['digging', 'fetch'],
+//   },
+//   {
+//     breed: 'Husky',
+//     averageWeight: 26,
+//     activities: ['running', 'agility', 'swimming'],
+//   },
+//   {
+//     breed: 'Bulldog',
+//     averageWeight: 36,
+//     activities: ['sleeping'],
+//   },
+//   {
+//     breed: 'Poodle',
+//     averageWeight: 18,
+//     activities: ['agility', 'fetch'],
+//   },
+// ];
+// //1.
+// const huskyWeight = breeds.find(dog => dog.breed === 'Husky').averageWeight;
+// console.log(huskyWeight);
+// //2.
+// const dogBothActivities = breeds.find(
+//   dog => dog.activities.includes('running') && dog.activities.includes('fetch')
+// ).breed;
+// console.log(dogBothActivities);
+// //3.
+// const allActivities = breeds.flatMap(dog => dog.activities);
+// console.log(allActivities);
+// //4.
+// const uniqueActivities = [...new Set(allActivities)];
+// console.log(uniqueActivities);
+// //5.
+// const swimmingAdjacent = [
+//   ...new Set(
+//     breeds
+//       .filter(dog => dog.activities.includes('swimming'))
+//       .flatMap(dog => dog.activities)
+//       .filter(act => act !== 'swimming')
+//   ),
+// ];
+
+// console.log(swimmingAdjacent);
+// //6.
+// console.log(breeds.every(dog => dog.averageWeight >= 10));
+// //7.
+// console.log(breeds.some(dog => dog.activities.length >= 3));
+// //8.
+// const likeFetch = breeds
+//   .filter(dog => dog.activities.includes('fetch'))
+//   .map(dog => dog.averageWeight);
+// console.log(likeFetch);
+// console.log(Math.max(...likeFetch));
 
 // Chanllenge 5
 // const dogs = [
@@ -568,12 +613,36 @@ const breeds = [
 // //5
 // console.log(dogs.some(dog => dog.curFood === dog.recommendedFood));
 // //6
-// const okayDog = dogs.some(
-//   dog => dog.curFood >= dog.curFood * 0.9 && dog.curFood <= dog.curFood * 1.1
-// );
+// const okayDogFood = dog =>
+//   dog.curFood >= dog.curFood * 0.9 && dog.curFood <= dog.curFood * 1.1;
+// const okayDog = dogs.every(okayDogFood);
 // console.log(okayDog);
-// //7.
-// const okayDog2 = dogs.filter(
-//   dog => dog.curFood >= dog.curFood * 0.9 && dog.curFood <= dog.curFood * 1.1
-// );
+// //7.Create an array containing the dogs that are eating
+// // an okay amount of food (try to reuse the condition used in 6
+// const okayDog2 = dogs.filter(okayDogFood);
 // console.log(okayDog2);
+
+//Sort
+//Strings
+const owner = ['Jonas', 'Zach', 'Adam', 'Martha'];
+console.log(owner.sort());
+console.log(owner);
+
+//Number
+console.log(movements);
+//return < 0, A,B (keep order)
+//return > 0, B,A  (switch order)
+//Ascending
+movements.sort((a, b) => {
+  if (a > b) return 1;
+  if (a < b) return -1;
+});
+
+movements.sort((a, b) => a - b);
+console.log(movements);
+//Descending
+movements.sort((a, b) => {
+  if (a > b) return -1;
+  if (a < b) return 1;
+});
+console.log(movements);
